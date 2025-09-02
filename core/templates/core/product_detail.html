@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="bg-[#fff] min-h-screen font-['Roboto'] py-10">
+
+  <!-- Main Product Layout -->
+  <div class="container mx-auto bg-white shadow-lg rounded-2xl p-6 md:flex gap-8">
+
+    <!-- Left Side: Product Image & Price -->
+    <div class="md:w-1/3 text-center">
+      <img src="{{ product.image.url }}" alt="{{ product.title }}" class="rounded-xl shadow-md w-full h-auto mb-4">
+      
+      <h2 class="text-lg font-bold text-gray-800">{{ product.title }}</h2>
+      
+      <p class="mt-2 text-gray-700">
+        {% if product.discount_price %}
+          <span class="line-through text-gray-400">Rs. {{ product.price }}</span>
+          <span class="ml-2 text-[#097AFA] font-semibold">Rs. {{ product.discount_price }}</span>
+        {% else %}
+          Rs. {{ product.price }}
+        {% endif %}
+      </p>
+
+      {% if product.bulk_offer_text %}
+        <p class="text-sm text-gray-600 mt-1">{{ product.bulk_offer_text }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Right Side: Static Description -->
+    <div class="md:w-2/3">
+      <h3 class="text-xl font-bold mb-3">Product Description</h3>
+
+      <h2 class="text-lg font-semibold">{{ product.title }}</h2>
+      <p class="text-gray-700 mt-2">
+        This {{ product.title }} is designed to meet the needs of students, engineers, 
+        and professionals. Equipped with a high-contrast display, it supports over 200 functions 
+        including algebraic, trigonometric, statistical, and computer number calculations. 
+        The ergonomic keypad layout ensures ease of use during exams or fieldwork, 
+        and the durable construction makes it ideal for daily use. Whether you’re solving equations, 
+        analyzing data, or exploring functions, this calculator delivers reliable and accurate performance every time.
+      </p>
+
+      <h4 class="mt-4 font-semibold">Key Features:</h4>
+      <ul class="list-disc list-inside text-gray-700 mt-2 space-y-1">
+        <li>Supports fractions, exponents, logarithms, and trigonometric functions</li>
+        <li>Multi-line display for reviewing inputs and results</li>
+        <li>Ideal for high school, college, and professional use</li>
+        <li>Battery-powered with auto power-off for extended life</li>
+        <li>Lightweight and compact design for portability</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Comments & Reviews (Static) -->
+  <div class="container mx-auto mt-8 bg-white rounded-2xl shadow p-6">
+    <h3 class="text-xl font-bold mb-4">Comments & Review</h3>
+
+    <div class="mb-6">
+      <h4 class="font-semibold">1. Positive Review – Student Perspective</h4>
+      <p class="text-sm text-gray-600">Rating: ⭐⭐⭐⭐⭐</p>
+      <p class="mt-1 text-gray-700">
+        "This {{ product.title }} has been a lifesaver for my high school math and physics classes. 
+        It’s easy to use, has all the necessary functions, and the multi-line display makes checking work super simple. 
+        Definitely worth it for students!"
+      </p>
+    </div>
+
+    <div class="mb-6">
+      <h4 class="font-semibold">2. Positive Review – Professional/Engineer</h4>
+      <p class="text-sm text-gray-600">Rating: ⭐⭐⭐⭐⭐</p>
+      <p class="mt-1 text-gray-700">
+        "Excellent build quality and functionality. I use this for quick field calculations, 
+        and it’s accurate and responsive. The layout is intuitive, and it handles complex equations with no trouble. 
+        Great value for engineers or technicians."
+      </p>
+    </div>
+
+    <div class="mb-6">
+      <h4 class="font-semibold">3. Neutral Review – General Use</h4>
+      <p class="text-sm text-gray-600">Rating: ⭐⭐⭐⭐☆</p>
+      <p class="mt-1 text-gray-700">
+        "Good calculator overall. It covers all the basic and advanced functions I need, 
+        though the user manual could be clearer for beginners. Once you get used to the button layout, it’s a solid tool."
+      </p>
+    </div>
+
+    <div class="mb-6">
+      <h4 class="font-semibold">4. Critical Review – Beginner User</h4>
+      <p class="text-sm text-gray-600">Rating: ⭐⭐⭐☆☆</p>
+      <p class="mt-1 text-gray-700">
+        "I found this calculator a bit overwhelming at first. It has a lot of functions, 
+        but the instructions weren’t very beginner-friendly. It works fine, 
+        but I had to look up tutorials online to figure it out."
+      </p>
+    </div>
+  </div>
+
+  <!-- Bottom Buttons -->
+  <div class="container mx-auto mt-8 flex justify-center gap-4">
+    <form method="POST" action="{% url 'cart_update' product.id %}">
+      {% csrf_token %}
+      <button type="submit" class="bg-[#097AFA] text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+        ADD TO CART
+      </button>
+    </form>
+   <a href="{% url 'buy_now' product.id %}" 
+   class="bg-[#097AFA] text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+   BUY NOW
+</a>
+
+  </div>
+
+</div>
+{% endblock %}

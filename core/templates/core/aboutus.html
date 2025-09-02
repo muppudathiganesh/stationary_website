@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Roboto', sans-serif;
+    
+  }
+</style>
+
+<div class="bg-[#fff] text-[#000] px-4 md:px-20 py-10">
+  <!-- Hero Image -->
+  <div class="mb-10">
+    <img src="{% static 'images/hero-a1.png' %}" alt="About Us" class="w-full rounded-lg">
+  </div>
+
+  <!-- Main Heading -->
+  <div class="text-center mb-10">
+    <h1 class="text-2xl md:text-3xl font-semibold text-[#000]">"Smart Supplies for Bright Futures."</h1>
+    <p class="mt-4 text-gray-700 max-w-3xl mx-auto">
+      We provide quality stationery and school supplies to support learning, creativity, and organization. From classrooms to home desks, we’re here to help students and educators stay prepared and inspired.
+    </p>
+  </div>
+
+  <!-- Section Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+    <div class="rounded-lg">
+      <img src="{% static 'images/13.png' %}" alt="Supplies" class="w-full h-48 object-cover rounded">
+    </div>
+    <div class="rounded-lg">
+      <img src="{% static 'images/17.png' %}" alt="Notebook" class="w-full h-48 object-cover rounded">
+    </div>
+    <div class="rounded-lg">
+      <img src="{% static 'images/18.png' %}" alt="Planning" class="w-full h-48 object-cover rounded">
+    </div>
+  </div>
+
+  <!-- Pen & Pencil Section -->
+  <div class="mb-16">
+    <h2 class="text-xl font-semibold text-[#000] mb-4">PEN & PENCIL</h2>
+    <p class="text-gray-700 mb-6">
+      At Supplyhive, we believe a great pen is more than just a writing tool—it’s an expression of thought, precision, and personality.
+      From smooth everyday ballpoints to elegant signature pens, we offer reliable writing instruments designed for comfort, style, and performance.
+    </p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <img src="{% static 'images/a2.png' %}" alt="Pens" class="rounded">
+      <img src="{% static 'images/a3.png' %}" alt="Pencils" class="rounded">
+    </div>
+  </div>
+
+  <!-- Bags Section -->
+  <div class="mb-16">
+    <h2 class="text-xl font-semibold text-[#000] mb-4">BAGS</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <img src="{% static 'images/a4.png' %}" alt="Bag 1" class="rounded">
+      <img src="{% static 'images/a5.png' %}" alt="Bag 2" class="rounded">
+    </div>
+  </div>
+
+  <!-- Stationery Section -->
+  <div class="mb-16">
+    <h2 class="text-xl font-semibold text-[#000] mb-4">ALL STATIONERY</h2>
+    <p class="text-gray-700 mb-6">
+      We offer a wide range of stationery essentials, from notebooks, folders, and sticky notes to markers, staplers, and rulers.
+      Each item is chosen for quality, functionality, and style—perfect for school, office, or creative use.
+    </p>
+    <div class="grid grid-cols-1 md:grid-cols-3 ml-40">
+  <!-- Left column: Notebook -->
+  <div class="md:col-span-1">
+    <img src="{% static 'images/7.png' %}" alt="Notebook" class="rounded" style="width:900px; height:500px;">
+
+  </div>
+
+  <!-- Right column: Sticky Notes + Stapler -->
+  <div class="md:col-span-2 grid grid-rows-2 ml-40">
+    <img src="{% static 'images/a6.png' %}" alt="Sticky Notes" class="rounded" style="width:300px; height:300px;">
+    <img src="{% static 'images/a7.png' %}" alt="Stapler" class="rounded"style="width:300px; height:300px;">
+  </div>
+</div>
+
+
+  <!-- Team Section -->
+  <!-- Team -->
+  <section class="container mx-auto px-4 py-6">
+    <h3 class="text-2xl font-bold text-center mb-6">The Team</h3>
+    <p class="text-center text-slate-700 max-w-3xl mx-auto mb-6">
+      Our team is a dedicated group of professionals passionate about delivering quality stationery in bulk with efficiency and care. With expertise in sourcing, logistics, and customer service, we ensure every order meets the highest standards.
+    </p>
+   <div class="grid sm:grid-cols-3 gap-6">
+  {% for i in "123" %}
+  <div class="rounded-2xl mb-2 text-center">
+    <img src="{% static 'images/team'|add:i|add:'.png' %}" class="rounded-xl w-full h-54 object-cover" alt="Team member {{ i }}">
+    <div class="mt-3 font-semibold">Seth Rollins</div>
+    <div class="text-sm mb-3 text-slate-600">Shop Owner</div>
+  </div>
+  {% endfor %}
+</div>
+ </section>
+
+{% endblock %}

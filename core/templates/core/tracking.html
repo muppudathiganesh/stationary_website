@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="bg-[#fff] min-h-screen py-10 font-['Roboto']">
+   <!-- Hero Section -->
+  <div class="container mx-auto text-center py-6">
+    <img src="{% static 'images/cart.png' %}" alt="Shop Banner" class="rounded-lg shadow-md w-full h-78 object-cover">
+    <h2 class="mt-4 text-xl md:text-2xl font-bold text-gray-800">
+      "Where Ideas Begin – Shop Smart, Stay Sharp!"
+    </h2>
+  </div>
+
+  <div class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-lg border border-[#7AABF5]">
+
+    <!-- Header -->
+    <h2 class="text-2xl font-bold mb-2">Order Tracking - #{{ order.id }}</h2>
+    <p class="text-gray-600 mb-6">Placed on: {{ order.created|date:"M d, Y H:i" }}</p>
+
+    <!-- Progress Bar -->
+    <div class="w-full bg-gray-200 rounded-full h-3 mb-6">
+       <!-- <div class="bg-[#097AFA] h-3 rounded-full transition-all duration-500" 
+            style="width: {{ progress }}%;"> 
+      </div>  -->
+      <div class="bg-[#097AFA] h-3 rounded-full transition-all duration-500
+            w-[{{ progress }}%]">
+</div>
+
+    </div>
+
+    <!-- Steps Timeline -->
+    <ul class="flex justify-between mb-8">
+      {% for step in status_flow %}
+        <li class="flex flex-col items-center w-full">
+          {% if forloop.counter0 <= current_index %}
+            <span class="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center mb-2">✔</span>
+            <span class="font-semibold text-sm text-green-600">{{ step }}</span>
+          {% else %}
+            <span class="bg-gray-300 text-gray-600 rounded-full w-8 h-8 flex items-center justify-center mb-2">○</span>
+            <span class="text-sm text-gray-500">{{ step }}</span>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+
+    <!-- Current Status -->
+    <div class="mb-6">
+      <h5 class="text-lg font-bold">Current Status: 
+        <span class="text-[#097AFA]">{{ order.status }}</span>
+      </h5>
+      <p class="text-sm text-gray-600">Last updated: {{ order.updated|date:"M d, Y H:i" }}</p>
+
+      {% if order.status != "Delivered" %}
+        <p class="text-sm text-gray-600 mt-1">
+          Expected Delivery: {{ delivery_estimate|date:"M d, Y" }}
+        </p>
+      {% else %}
+        <p class="text-sm text-green-600 mt-1">
+          Delivered on: {{ delivery_estimate|date:"M d, Y H:i" }}
+        </p>
+      {% endif %}
+    </div>
+
+    <!-- Order Summary -->
+    <h3 class="text-xl font-bold mb-3">Order Summary</h3>
+    <div class="space-y-4 mb-4">
+      {% for item in order.items.all %}
+        <div class="flex justify-between items-center border-b pb-2">
+          <div class="flex items-center space-x-3">
+            <img src="{{ item.product.image.url }}" 
+                 alt="{{ item.product.title }}" 
+                 class="w-14 h-14 object-contain rounded">
+            <div>
+              <p class="font-semibold">{{ item.product.title }}</p>
+              <p class="text-sm text-gray-600">Qty: {{ item.quantity }}</p>
+            </div>
+          </div>
+          <p class="font-bold">₹{{ item.get_total_price }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Total -->
+    <div class="flex justify-between bg-[#7AABF5] text-white font-bold text-lg p-4 rounded-lg">
+      <span>Total</span>
+      <span>₹{{ order.get_total_cost }}</span>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

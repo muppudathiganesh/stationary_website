@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Link to Google Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+
+
+<div class="bg-white min-h-screen py-8">
+
+    <!-- Top Section with Banner -->
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <div class="rounded-lg overflow-hidden relative">
+            <img src="{% static 'images/Screenshot 2025-08-30 132832.png' %}" alt="Bulk Offer Banner" class="w-full h-auto object-cover">
+            
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+
+        <!-- Essential Stationery Section -->
+        <div class="text-center my-12">
+            <h2 class="text-3xl font-bold text-gray-800">Essential Stationery, Exceptional Quality</h2>
+            <p class="mt-2 text-gray-600 max-w-3xl mx-auto">From everyday essentials to specialty tools, our products are crafted with care and creativity, ensuring every stroke, every line, and every detail is perfect.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-center mb-12">
+            <div class="rounded-lg overflow-hidden shadow-lg">
+              <img src="{% static 'images/Screenshot 2025-08-30 131600.png' %}" alt="Notebook and pens"  class="w-full h-auto object-cover">
+
+            </div>
+            <div class="rounded-lg overflow-hidden shadow-lg">
+             <img src="{% static 'images/Screenshot 2025-08-30 131604.png' %}"  alt="Paper and office supplies"  class="w-full h-auto object-cover">
+
+            </div>
+            <div class="rounded-lg overflow-hidden shadow-lg">
+        <img src="{% static 'images/Screenshot 2025-08-30 131626.png' %}"  alt="Notebooks"  class="w-full h-auto object-cover">
+
+            </div>
+        </div>
+
+       
+    <section class="container mx-auto px-4 grid md:grid-cols-2 gap-8 items-start m-6">
+    <div class="space-y-6 m-8">
+      <article class="space-y-3 text-slate-800">
+        <h3 class="font-bold text-lg">1. Writing Essentials</h3>
+        <p>From everyday ballpoint pens to premium gel pens and highlighters, our writing tools ensure clarity, comfort, and efficiency. Perfect for classrooms, offices, or creative spaces, these essentials are built to last and perform.</p>
+      </article>
+      <article class="space-y-3 text-slate-800">
+        <h3 class="font-bold text-lg">2. Paper Products</h3>
+        <p>Whether it's notebooks, notepads, printer paper, or sticky notes, our paper supplies cover every need. Designed for durability and smooth performance, these products are ideal for note-taking, organizing, printing, or planning in any situation.</p>
+      </article>
+      <article class="space-y-3 text-slate-800">
+        <h3 class="font-bold text-lg">3. Classroom & Office Tools</h3>
+        <p>Keep workspaces equipped and efficient with rulers, staplers, scissors, erasers, and more. These tools bring order and precision to daily tasks, making them indispensable in both educational and professional environments.</p>
+      </article>
+    </div>
+    <div class="flex justify-center">
+      <img src="{% static 'images/7.png' %}" alt="Office Supplies" class="rounded-2xl shadow-md w-full max-w-md object-cover">
+    </div>
+</section>
+       
+  <section class="container">
+    <h3 class="text-xl font-bold text-center m-10">Featured Products</h3>
+    <div class="flex flex-wrap justify-center gap-8 ">
+      {% for product in featured %}
+      <div class="w-[300px]   rounded-xl bg-blue-400 shadow hover:shadow-lg transition text-center">
+        <img src="{{ product.image.url }}" alt="{{ product.title }}" class="rounded-lg w-full h-38 object-cover">
+        <div class="mt-2 ">
+          <div class="font-medium text-sm">{{ product.title }}</div>
+          <!-- Rating -->
+          <div class="flex items-center justify-center mt-1">
+            {% for i in "12345" %}
+              {% if forloop.counter <= product.rating|default:0|floatformat:0 %}
+                <span class="text-amber-500 text-xs">★</span>
+              {% else %}
+                <span class="text-amber-300 text-xs">★</span>
+              {% endif %}
+            {% endfor %}
+            <span class="ml-1 text-black text-xs">({{ product.rating|default:0 }})</span>
+          </div>
+          <!-- Price -->
+          <div class="mt-1 font-bold text-sm">
+            {% if product.discount_price %}
+              <span class="line-through text-gray-200">Rs. {{ product.price }}</span>
+              <span class="font-bold text-yellow-300 ml-2">Rs. {{ product.discount_price }}</span>
+            {% else %}
+              Rs. {{ product.price }}
+            {% endif %}
+          </div>
+          {% if product.bulk_offer_text %}
+            <div class="text-xs text-black mt-1">{{ product.bulk_offer_text }}</div>
+          {% endif %}
+          <!-- Add to Cart -->
+          <form method="POST" action="{% url 'cart_update' product.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-light w-50 mt-2 rounded-lg text-sm py-1 mb-2">Add to Cart</button>
+          </form>
+        </div>
+      </div>
+      {% empty %}
+      <p class="w-full text-center text-slate-600">Add featured products in admin to see them here.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+        
+        <!-- Trending Section -->
+        <section class="container mx-auto px-4 py-10">
+    <h3 class="text-2xl font-bold text-center mb-6">Trending</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
+      {% for product in trending %}
+        <div class="rounded-3xl bg-white shadow hover:shadow-lg transition">
+          <img src="{{ product.image.url }}" alt="{{ product.title }}" class="rounded-xl  w-full w-64 h-64 object-cover">
+        </div>
+      {% empty %}
+        <p class="col-span-full text-center text-slate-600">Mark items as trending in admin.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+        <!-- Customer Testimonial -->
+        <div class="bg-lightBlue bg-opacity-30 p-8 rounded-xl my-12 text-center">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Customer Testimonial</h3>
+
+            <p class="text-gray-700 max-w-4xl mx-auto">
+                "Finding the right supplies has never been easier. From the moment I placed my order, the process was seamless, and the quality of the products exceeded my expectations. I love that I can get everything I need in one place. This is my new go-to for all my stationery needs."
+            </p>
+        </div>
+
+          <!-- Back to School Section -->
+  <section class="container mx-auto px-4 py-10">
+    <h3 class="text-2xl font-bold text-center mb-6">Back to School</h3>
+    <div class="flex flex-wrap justify-center gap-8">
+      {% for product in back_to_school %}
+      <div class="w-[300px] rounded-xl bg-blue-400 shadow hover:shadow-lg transition text-center">
+        <img src="{{ product.image.url }}" alt="{{ product.title }}" class="rounded-lg w-full h-32 object-cover">
+        <div class="mt-2">
+          <div class="font-medium text-sm">{{ product.title }}</div>
+          <!-- Rating -->
+          <div class="flex items-center justify-center mt-1">
+            {% for i in "12345" %}
+              {% if forloop.counter <= product.rating|floatformat:0 %}
+                <span class="text-amber-500 text-xs">★</span>
+              {% else %}
+                <span class="text-amber-300 text-xs">★</span>
+              {% endif %}
+            {% endfor %}
+            <span class="ml-1 text-black text-xs">({{ product.rating}})</span>
+          </div>
+          <!-- Price -->
+          <div class="mt-1 font-bold text-sm">
+            {% if product.discount_price %}
+              <span class="line-through text-gray-200">Rs. {{ product.price }}</span>
+              <span class="font-bold text-yellow-300 ml-2">Rs. {{ product.discount_price }}</span>
+            {% else %}
+              Rs. {{ product.price }}
+            {% endif %}
+          </div>
+          {% if product.bulk_offer_text %}
+            <div class="text-xs text-black mt-1">{{ product.bulk_offer_text }}</div>
+          {% endif %}
+          <!-- Add to Cart -->
+          <form method="POST" action="{% url 'cart_update' product.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-light w-50 mt-2 rounded-lg text-sm py-1 mb-2">Add to Cart</button>
+          </form>
+        </div>
+      </div>
+      {% empty %}
+      <p class="w-full text-center text-slate-600">Add Back to School items in admin to see them here.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+
+      
+        
+        <!-- The Team Section -->
+        <!-- Team Section -->
+  <section class="container mx-auto px-4 py-6">
+    <h3 class="text-2xl font-bold text-center mb-6">The Team</h3>
+    <p class="text-center text-slate-700 max-w-3xl mx-auto mb-6">
+      Our team is a dedicated group of professionals passionate about delivering quality stationery in bulk with efficiency and care. With expertise in sourcing, logistics, and customer service, we ensure every order meets the highest standards.
+    </p>
+    <div class="grid sm:grid-cols-3 gap-6">
+      {% for i in "123" %}
+      <div class="rounded-2xl mb-2 text-center">
+        <img src="{% static 'images/team'|add:i|add:'.png' %}" class="rounded-xl w-full h-54 object-cover" alt="Team member {{ i }}">
+        <div class="mt-3 font-semibold">Seth Rollins</div>
+        <div class="text-sm mb-3 text-slate-600">Shop Owner</div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+<!-- Simple JS for "Add to Cart" notification -->
+<!-- <script>
+    function addToCart(productName) {
+        alert(productName + ' has been added to your cart!');
+    }
+</script> -->
+{% endblock content %}

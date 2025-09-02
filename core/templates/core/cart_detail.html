@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="bg-[#fff] min-h-screen py-10 font-['Roboto']">
+
+ <!-- Hero Section -->
+  <div class="container mx-auto text-center py-6">
+    <img src="{% static 'images/cart.png' %}" alt="Shop Banner" class="rounded-lg shadow-md w-full h-78 object-cover">
+    <h2 class="mt-4 text-xl md:text-2xl font-bold text-gray-800">
+      "Where Ideas Begin – Shop Smart, Stay Sharp!"
+    </h2>
+  </div>
+
+
+  <h2 class="text-3xl font-bold text-center mb-10">My Cart</h2>
+
+  {% if cart|length > 0 %}
+    <div class="max-w-5xl mx-auto space-y-6">
+      
+      {% for item in cart %}
+      <!-- Cart Item Card -->
+      <div class="bg-white rounded-xl shadow-md p-6 grid grid-cols-1 md:grid-cols-4 gap-6 items-center border border-[#7AABF5]">
+        
+        <!-- Product Image -->
+        <div class="flex justify-center">
+          <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}" class="w-28 h-28 object-contain rounded">
+        </div>
+
+        <!-- Product Info -->
+        <div class="text-center md:text-left">
+          <p class="font-bold text-lg">{{ item.product.title }}</p>
+          <p class="text-green-600 text-sm">Buy 10 or more @ Rs.249</p>
+        </div>
+
+        <!-- Quantity Control -->
+        <div class="flex items-center justify-center space-x-2">
+          <form method="POST" action="{% url 'cart_update' item.product.id %}" class="flex items-center space-x-2">
+            {% csrf_token %}
+            
+             <button type="submit" name="decrease" class="bg-[#097AFA] text-white w-8 h-8 flex items-center justify-center rounded hover:bg-blue-600">
+                              -
+                                 </button>
+
+            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="w-14 text-center border rounded">
+         <button   type="submit"   name="increase"   class="bg-[#097AFA] text-white w-8 h-8 flex items-center justify-center rounded hover:bg-blue-600">
+                                      +
+                                         </button>
+
+          </form>
+        </div>
+
+        <!-- Price -->
+        <div class="text-center font-semibold text-lg">
+          Rs. {{ item.total_price }}
+        </div>
+      </div>
+      {% endfor %}
+
+      <!-- Cart Total -->
+      <div class="bg-white rounded-xl shadow-md p-6 border border-[#7AABF5]">
+        <div class="flex justify-between items-center bg-[#7AABF5] text-white font-bold text-lg p-4 rounded-lg">
+          <span>Total</span>
+          <span>Rs. {{ total_price }}</span>
+        </div>
+        <div class="mt-6 text-center">
+          <a href="{% url 'billing_detail' %}" 
+             class="bg-[#097AFA] text-white px-8 py-3 rounded-full hover:bg-blue-600 transition">
+            Proceed to Checkout
+          </a>
+        </div>
+      </div>
+
+    </div>
+  {% else %}
+    <p class="text-center text-gray-600 bg-white py-6 rounded-lg shadow max-w-xl mx-auto">
+      Your cart is empty. 
+      <a href="{% url 'shop' %}" class="text-blue-600 underline">Shop now!</a>
+    </p>
+  {% endif %}
+
+</div>
+</div>
+{% endblock %}

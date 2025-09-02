@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="bg-[#fff] min-h-screen py-10 font-['Roboto']">
+  <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+    <form method="post" action="{% url 'checkout' %}" id="checkout-form" class="lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {% csrf_token %}
+
+      <!-- Billing Details -->
+    
+<div class="bg-white shadow-lg rounded-2xl p-6 border border-[#7AABF5]">
+  <h2 class="text-2xl font-bold mb-6">Billing Details</h2>
+  
+  <form id="billingForm" class="space-y-6">
+    <div>
+      <label class="block font-semibold mb-2">Name</label>
+      <input type="text" name="fullname" required minlength="3"
+             class="w-full px-4 py-2 rounded-lg bg-[#7AABF5] text-black focus:ring-2 focus:ring-[#097AFA] outline-none"
+             placeholder="Enter your full name">
+    </div>
+
+    <div>
+      <label class="block font-semibold mb-2">Street Address</label>
+      <textarea name="address" rows="3" required minlength="5"
+                class="w-full px-4 py-2 rounded-lg bg-[#7AABF5] text-black focus:ring-2 focus:ring-[#097AFA] outline-none"
+                placeholder="Enter street address"></textarea>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block font-semibold mb-2">Town/City</label>
+        <input type="text" name="city" required pattern="[A-Za-z\s]+" minlength="2"
+               class="w-full px-4 py-2 rounded-lg bg-[#7AABF5] text-black focus:ring-2 focus:ring-[#097AFA] outline-none"
+               placeholder="Enter your city">
+      </div>
+      <div>
+        <label class="block font-semibold mb-2">Postal Code</label>
+        <input type="text" name="postal" required pattern="[0-9]{5,6}"
+               class="w-full px-4 py-2 rounded-lg bg-[#7AABF5] text-black focus:ring-2 focus:ring-[#097AFA] outline-none"
+               placeholder="e.g. 600001">
+      </div>
+    </div>
+
+    <button type="submit" class="bg-[#097AFA] text-white px-6 py-2 rounded-lg hover:bg-[#065ACB]">
+      Submit
+    </button>
+  </form>
+</div>
+
+      <!-- Order Summary -->
+      <div class="bg-white shadow-lg rounded-2xl p-6 border border-[#7AABF5]">
+        <h2 class="text-2xl font-bold mb-6">Your Order</h2>
+        
+        {% for item in cart %}
+        <div class="flex justify-between mb-4">
+           <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}" class="w-28 h-28 object-contain rounded">
+          <p class="font-semibold">{{ item.product.title }} x {{ item.quantity }}</p>
+          <p class="font-semibold">Rs. {{ item.total_price }}</p>
+        </div>
+        {% endfor %}
+
+        <div class="flex justify-between bg-[#7AABF5] text-black font-bold text-lg p-3 rounded-lg">
+          <span>Total</span>
+          <span>Rs. {{ total_price }}</span>
+        </div>
+
+        <!-- Payment Options -->
+        <div class="mt-6 space-y-3">
+          <label class="flex items-center space-x-2">
+            <input type="radio" name="payment" value="cod" checked class="text-[#097AFA]">
+            <span>Cash on Delivery</span>
+          </label>
+          <label class="flex items-center space-x-2">
+            <input type="radio" name="payment" value="upi" class="text-[#097AFA]">
+            <span>UPI</span>
+          </label>
+          <label class="flex items-center space-x-2">
+            <input type="radio" name="payment" value="debit" class="text-[#097AFA]">
+            <span>Debit Card</span>
+          </label>
+          <label class="flex items-center space-x-2">
+            <input type="radio" name="payment" value="credit" class="text-[#097AFA]">
+            <span>Credit Card</span>
+          </label>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="mt-6 text-center">
+          <button type="submit"
+                  class="bg-[#097AFA] text-white px-6 py-3 rounded-full hover:bg-blue-600 transition">
+            Place Order
+          </button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}
